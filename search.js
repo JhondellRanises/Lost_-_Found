@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (matchesSearch && matchesStatus && matchesLocation && matchesCategory) {
                 card.style.display = 'block';
-                // Add a smooth fade-in animation
+                
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             } else {
@@ -37,13 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add event listeners
     searchInput.addEventListener('input', filterItems);
     statusSelect.addEventListener('change', filterItems);
     locationSelect.addEventListener('change', filterItems);
     categorySelect.addEventListener('change', filterItems);
 
-    // Add transition styles to cards
     itemCards.forEach(card => {
         card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
     });

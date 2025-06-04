@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0); // Disable error reporting for production
+error_reporting(0); 
 include('db.php');
 
 // Check if staff is logged in
@@ -111,6 +111,7 @@ try {
       <li><a href="reports/ReportFound.php"><span class="item">Report Found</span></a></li>
       <li><a href="PendingClaims.php"><span class="item">Pending Claims</span></a></li>
       <li><a href="MyReports.php"><span class="item">My Reports</span></a></li>
+      <li><a href="SystemMonitoring.php"><span class="item">System Monitoring</span></a></li>
     </ul>
   </aside>
 
@@ -122,28 +123,27 @@ try {
                 <div class="profile-image-container">
                     <img src="Profile Icon.png" alt="Profile Icon">
                 </div>
-                <h2>Student Information</h2>
-                <?php if (isset($_SESSION['studentID'])): ?>
+                <h2>Staff Information</h2>
+                <?php if (isset($_SESSION['email'])): ?>
                     <div class="info-item">
-                        <label>Full Name:</label>
-                        <span><?php echo htmlspecialchars($_SESSION['fname'] . ' ' . $_SESSION['lname']); ?></span>
+                        <label>Name:</label>
+                        <span><?php echo htmlspecialchars($_SESSION['fname']); ?></span>
                     </div>
                     <div class="info-item">
-                        <label>Student ID:</label>
-                        <span><?php echo htmlspecialchars($_SESSION['studentID']); ?></span>
+                        <label>Email:</label>
+                        <span><?php echo htmlspecialchars($_SESSION['email']); ?></span>
                     </div>
                     <div class="info-item">
                         <label>Role:</label>
                         <span><?php echo ucfirst(htmlspecialchars($_SESSION['role'])); ?></span>
                     </div>
                     <div class="info-item logout-container">
-                    <a href="Log_In.php" class="logout-btn">Logout</a>
+                        <a href="Log_In.php" class="logout-btn">Logout</a>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
-
   <!-- Item Details Modal -->
   <div id="itemDetailsModal" class="item-details-modal">
     <div class="item-details-header">
@@ -253,5 +253,6 @@ try {
 
   <script src="Dashboard1.js"></script>
   <script src="itemDetails.js"></script>
+  <script src="search.js"></script>
 </body>
 </html>

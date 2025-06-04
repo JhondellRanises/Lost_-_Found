@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0); // Disable error reporting for production
+error_reporting(0);
 include('db.php');
 
 // Check if user is logged in
@@ -73,14 +73,14 @@ try {
     <div class="success-message">
       <?php echo htmlspecialchars($_SESSION['message']); ?>
     </div>
-    <?php unset($_SESSION['message']); // Clear the message after displaying ?>
+    <?php unset($_SESSION['message']); ?>
   <?php endif; ?>
 
   <?php if (isset($_SESSION['error'])): ?>
     <div class="error-message">
       <?php echo htmlspecialchars($_SESSION['error']); ?>
     </div>
-    <?php unset($_SESSION['error']); // Clear the error after displaying ?>
+    <?php unset($_SESSION['error']);?>
   <?php endif; ?>
 
   <!-- NAVBAR-->
@@ -277,6 +277,8 @@ try {
 
   <script src="Dashboard1.js"></script>
   <script src="itemDetails.js"></script>
+  <script src="search.js"></script>
+
   <script>
     // Add this to your existing JavaScript code
     function handleClaim(foundId) {

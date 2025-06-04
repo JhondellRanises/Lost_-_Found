@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener('click', function (e) {
             const section = this.getAttribute('data-section');
             
-            // Only prevent default for profile section
             if (section === 'profile') {
                 e.preventDefault();
                 panel.classList.remove('hidden');
@@ -58,8 +57,8 @@ const sidebarLinks = document.querySelectorAll('.sidebar a');
 
 sidebarLinks.forEach(link => {
   link.addEventListener('click', function () {
-    sidebarLinks.forEach(l => l.classList.remove('active')); // remove from all
-    this.classList.add('active'); // add to clicked one
+    sidebarLinks.forEach(l => l.classList.remove('active')); 
+    this.classList.add('active'); 
   });
 });
 
@@ -68,25 +67,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   menuButtons.forEach((btn) => {
     btn.addEventListener("click", function (e) {
-      // Close all other open menus
+      
       document.querySelectorAll(".card-dropdown").forEach(drop => drop.classList.add("hidden"));
 
-      // Toggle dropdown visibility
+      
       const dropdown = btn.nextElementSibling;
       dropdown.classList.toggle("hidden");
 
-      // Prevent click from affecting other elements
       e.stopPropagation();
     });
   });
 
-  // Hide dropdown if clicked outside
   document.addEventListener("click", function () {
     document.querySelectorAll(".card-dropdown").forEach(drop => drop.classList.add("hidden"));
   });
 });
 
-// Handle card menu clicks
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('card-menu')) {
         const dropdown = e.target.nextElementSibling;
@@ -94,7 +90,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Add update panel styles
 const updatePanelStyles = document.createElement('style');
 updatePanelStyles.textContent = `
     .update-panel {
@@ -181,14 +176,12 @@ updatePanelStyles.textContent = `
 `;
 document.head.appendChild(updatePanelStyles);
 
-// Handle Update button clicks
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('update-btn')) {
         const card = e.target.closest('.item-card');
         const itemId = card.dataset.itemId;
-        const itemType = card.dataset.status; // 'lost' or 'found'
+        const itemType = card.dataset.status; 
         
-        // Get current values
         const itemName = card.querySelector('h3').textContent;
         const color = card.querySelector('p:nth-of-type(1)').textContent.replace('Color:', '').trim();
         const location = card.querySelector('p:nth-of-type(2)').textContent.replace('Location:', '').trim();
@@ -222,11 +215,9 @@ document.addEventListener('click', function(e) {
             </div>
         `;
 
-        // Show the update panel
         popupOverlay.innerHTML = updateForm;
         popupOverlay.classList.add('show');
 
-        // Handle form submission
         const form = popupOverlay.querySelector('form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -264,7 +255,6 @@ document.addEventListener('click', function(e) {
             });
         });
 
-        // Handle cancel button
         const cancelBtn = popupOverlay.querySelector('.update-btn.cancel');
         cancelBtn.addEventListener('click', () => {
             popupOverlay.classList.remove('show');
@@ -272,7 +262,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Add popup panel styles
 const popupStyles = document.createElement('style');
 popupStyles.textContent = `
     .popup-overlay {
@@ -364,12 +353,11 @@ popupStyles.textContent = `
 `;
 document.head.appendChild(popupStyles);
 
-// Create popup overlay
+
 const popupOverlay = document.createElement('div');
 popupOverlay.className = 'popup-overlay';
 document.body.appendChild(popupOverlay);
 
-// Function to show popup
 function showPopup(options) {
     const { title, message, type = 'confirm', onConfirm, onCancel } = options;
 
@@ -404,12 +392,11 @@ function showPopup(options) {
     });
 }
 
-// Handle Delete button clicks
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('delete-btn')) {
         const card = e.target.closest('.item-card');
         const itemId = card.dataset.itemId;
-        const itemType = card.dataset.status; // 'lost' or 'found'
+        const itemType = card.dataset.status; 
 
         showPopup({
             title: 'Confirm Deletion',
@@ -450,7 +437,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Add event listeners for approve/reject claim buttons
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('approve-claim-btn') || e.target.classList.contains('reject-claim-btn')) {
         const itemId = e.target.dataset.itemId;
@@ -468,7 +454,7 @@ document.addEventListener('click', function(e) {
             .then(data => {
                 alert(data.message);
                 if (data.success) {
-                    // Refresh the page to update the display
+                    
                     window.location.reload();
                 }
             })
@@ -480,7 +466,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Handle view claim details button clicks
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('view-claim-btn')) {
         const itemId = e.target.dataset.itemId;
@@ -488,7 +473,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Add CSS for the claim popup
 const claimStyle = document.createElement('style');
 claimStyle.textContent = `
     .claim-popup {
@@ -536,13 +520,11 @@ claimStyle.textContent = `
 `;
 document.head.appendChild(claimStyle);
 
-// Handle Claim button clicks
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('staff-claim-btn')) {
         const card = e.target.closest('.item-card');
         const itemId = card.dataset.itemId;
         
-        // Create claim popup
         const popup = document.createElement('div');
         popup.className = 'claim-popup';
         popup.innerHTML = `

@@ -21,7 +21,6 @@ try {
         throw new Exception("Database connection failed");
     }
 
-    // Debug output
     echo "<!-- Debug: Staff email = " . htmlspecialchars($staff_email) . " -->\n";
 
     // First, let's check if there are any claims at all
@@ -72,7 +71,6 @@ try {
         throw new Exception("Failed to get result: " . $stmt->error);
     }
 
-    // Debug output
     echo "<!-- Debug: Number of claims for this staff = " . $claims_result->num_rows . " -->\n";
 
 } catch (Exception $e) {
@@ -198,6 +196,7 @@ if (isset($_SESSION['email'])) {
             <li><a href="reports/ReportFound.php"><span class="item">Report Found</span></a></li>
             <li><a href="PendingClaims.php" class="active"><span class="item">Pending Claims</span></a></li>
             <li><a href="MyReports.php"><span class="item">My Reports</span></a></li>
+            <li><a href="SystemMonitoring.php"><span class="item">System Monitoring</span></a></li>
         </ul>
     </aside>
 

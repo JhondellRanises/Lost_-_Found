@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0); // Disable error reporting for production
+error_reporting(0); 
 include('db.php');
 
 // Check if user is logged in
@@ -112,6 +112,7 @@ try {
                 <li><a href="reports/ReportFound.php"><span class="item">Report Found</span></a></li>
                 <li><a href="PendingClaims.php"><span class="item">Pending Claims</span></a></li>
                 <li><a href="MyReports.php" class="active"><span class="item">My Reports</span></a></li>
+                <li><a href="SystemMonitoring.php"><span class="item">System Monitoring</span></a></li>
             <?php endif; ?>
         </ul>
     </aside>

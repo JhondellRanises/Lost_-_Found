@@ -3,11 +3,11 @@ session_start();
 include("db.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $identifier = trim($_POST['identifier']);
-    $password = $_POST['password'];
-    $selected_role = $_POST['selected_role'];
+    $identifier = isset($_POST['identifier']) ? trim($_POST['identifier']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $selected_role = isset($_POST['selected_role']) ? $_POST['selected_role'] : '';
 
-    if (empty($identifier) || empty($password)) {
+    if (empty($identifier) || empty($password) || empty($selected_role)) {
         echo "<script>alert('Please enter your credentials')</script>";
     } else {
         $success = false;
@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         try {
             switch($selected_role) {
                 case 'admin':
-                    // Try admin login
                     $query = "SELECT * FROM admins WHERE (username = ? OR email = ?) AND status = 'active' LIMIT 1";
                     $stmt = $con->prepare($query);
                     $stmt->bind_param("ss", $identifier, $identifier);
@@ -58,6 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             $_SESSION['fname'] = $staff_data['fname'];
                             $_SESSION['lname'] = $staff_data['lname'];
                             $_SESSION['role'] = 'staff';
+
+                            // Update last login time for staff
+                            $update_query = "UPDATE staff SET last_login = CURRENT_TIMESTAMP WHERE email = ?";
+                            $update_stmt = $con->prepare($update_query);
+                            $update_stmt->bind_param("s", $staff_data['email']);
+                            $update_stmt->execute();
+                            $update_stmt->close();
+
                             header("Location: StaffDashboard.php");
                             exit;
                         }
@@ -80,6 +87,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             $_SESSION['fname'] = $user_data['fname'];
                             $_SESSION['lname'] = $user_data['lname'];
                             $_SESSION['role'] = 'user';
+
+                            // Update last login time for student
+                            $update_query = "UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE StudentID = ?";
+                            $update_stmt = $con->prepare($update_query);
+                            $update_stmt->bind_param("s", $user_data['StudentID']);
+                            $update_stmt->execute();
+                            $update_stmt->close();
+
                             header("Location: UserDashboard.php");
                             exit;
                         }
@@ -260,7 +275,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <div class="role-selector">
             <button type="button" class="role-btn active" data-role="student">Student</button>
             <button type="button" class="role-btn" data-role="staff">Staff</button>
-            <button type="button" class="role-btn" data-role="admin">Admin</button>
         </div>
 
         <form id="loginForm" method="POST" action="Log_In.php">
@@ -291,7 +305,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     </div>
 
     <script>
-        // Role selection functionality
+        // Role selection
         const roleButtons = document.querySelectorAll('.role-btn');
         const selectedRoleInput = document.getElementById('selected_role');
         const studentRegister = document.getElementById('studentRegister');
@@ -323,13 +337,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         identifierInput.type = 'email';
                         studentRegister.style.display = 'none';
                         staffRegister.style.display = 'block';
-                        break;
-                    case 'admin':
-                        identifierLabel.textContent = 'Username / Email';
-                        identifierInput.placeholder = 'Enter your username or email';
-                        identifierInput.type = 'text';
-                        studentRegister.style.display = 'none';
-                        staffRegister.style.display = 'none';
                         break;
                 }
             });
